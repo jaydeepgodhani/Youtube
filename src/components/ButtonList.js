@@ -6,7 +6,7 @@ const ButtonList = () => {
   return (
     <div className='m-2'>
       {buttonList.map((button) => (
-        <button className="p-1.5 px-4 rounded-lg bg-slate-200 mx-2 text-sm hover:bg-slate-300">{button}</button>
+        <button key={button} className="p-1.5 px-4 rounded-lg bg-slate-200 mx-2 text-sm hover:bg-slate-300">{button}</button>
       ))}
     </div>
   );

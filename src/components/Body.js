@@ -8,6 +8,8 @@ const Body = () => {
 
   const isSidebarOpen = useSelector(store => store.app2.isMenuOpen);
 
+  if(!isSidebarOpen) return null;
+
   return (
     <div>
       <Head />
