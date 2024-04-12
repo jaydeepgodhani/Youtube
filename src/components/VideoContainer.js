@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { POPULAR_VIDEOS } from "../utils/constants";
 import VideoCard from "./VideoCard";
 import {data} from "../utils/fakeData";
+import { Link } from "react-router-dom";
 
 const VideoContainer = () => {
 
@@ -21,12 +22,14 @@ const VideoContainer = () => {
   if(!videos) return null;
 
   return (
-    <div className='m-2 flex flex-wrap'>
-      {videos.map(video =>
-        <VideoCard key={video.id} info={video.snippet} />
-      )}
+    <div className="flex flex-wrap flex-row">
+      {videos.map((video) => (
+        <Link to={ "/watch?v=" + video.id }>
+          <VideoCard key={video.id} info={video.snippet} />
+        </Link>
+      ))}
     </div>
-  )
+  );
 }
 
 export default VideoContainer;

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const buttonList = ['All', 'Music', 'Live', 'Cricket', 'Gaming', 'News', 'Songs', 'Motivation', 'Web Design', 'Jaydeep Godhani', 'Kapil Sharma', 'Trending', 'India', 'StudyIQ'];
+const buttonList = ['All', 'Music', 'Live', 'Cricket', 'Gaming', 'News', 'Songs', 'Motivation', 'Web Design', 'Jaydeep Godhani', 'Trending', 'India', 'StudyIQ'];
 
 const ButtonList = () => {
   return (

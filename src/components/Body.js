@@ -1,24 +1,22 @@
-import React from 'react'
+import React from "react";
 import Head from "./Head";
 import Sidebar from "./Sidebar";
-import MainContainer from "./MainContainer";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 
 const Body = () => {
+  const isSidebarOpen = useSelector((store) => store.app2.isMenuOpen);
 
-  const isSidebarOpen = useSelector(store => store.app2.isMenuOpen);
-
-  if(!isSidebarOpen) return null;
+  if (!isSidebarOpen) return null;
 
   return (
     <div>
-      <Head />
-      <div className="grid grid-flow-col mt-1">
+      <div className="grid grid-cols-12 mt-1">
         {isSidebarOpen && <Sidebar />}
-        <MainContainer />
+        <Outlet />
       </div>
     </div>
   );
-}
+};
 
 export default Body;

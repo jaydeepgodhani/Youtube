@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice';
+import { Link } from 'react-router-dom';
 
 const Head = () => {
 
@@ -19,11 +20,11 @@ const Head = () => {
           alt="menu icon"
           onClick={clickToggleMenu}
         />
-        <img
-          src="/youtube-logo.png"
-          className="h-16 cursor-pointer"
-          alt="youtube logo"
-        />
+          <img
+            src="/youtube-logo.png"
+            className="h-16 cursor-pointer"
+            alt="youtube logo"
+          />
       </div>
       <div className="flex col-span-8 items-center p-4 justify-center">
         <input
