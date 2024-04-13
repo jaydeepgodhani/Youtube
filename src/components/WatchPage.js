@@ -14,7 +14,7 @@ const WatchPage = () => {
   // },[])
 
   return (
-    <div className='col-span-9'>
+    <div className='col-span-9 m-2 p-2'>
       <iframe
         width="1200"
         height="600"
