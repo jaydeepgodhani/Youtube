@@ -1,32 +1,60 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice';
 import { SEARCH_SUGGETION_API } from '../utils/constants';
+import { cacheResults } from '../utils/searchSlice';
 
 const Head = () => {
 
-  const [inputText, setInputText] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const searchCache = useSelector((store) => store.search);
   const dispatch = useDispatch();
 
-  const searchVideo = () => {
-    console.log("11... video search in progress...");
-    console.log(inputText);
-  }
+  /**
+   *  searchCache = {
+   *     "iphone": ["iphone 11", "iphone 14"]
+   *  }
+   *  searchQuery = iphone
+   */
 
   useEffect(() => {
-    const timer = setTimeout(()=> getSuggestions(inputText), 2000)
-    return () => {clearTimeout(timer);}
-  },[inputText])
+    const timer = setTimeout(() => {
+      if(searchQuery) {
+        console.log(searchCache);
+        if (searchCache[searchQuery]) {
+          setSuggestions(searchCache[searchQuery]);
+        } else {
+          getSearchSugsestions();
+        }
+      }
+    }, 200);
 
-  const clickToggleMenu = () => {
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  const getSearchSugsestions = async () => {
+    const data = await fetch(SEARCH_SUGGETION_API + searchQuery);
+    const json = await data.json();
+    //console.log(json[1]);
+    setSuggestions(json[1]);
+
+    // update cache
+    dispatch(
+      cacheResults({
+        [searchQuery]: json[1],
+      })
+    );
+  };
+
+  const toggleMenuHandler = () => {
     dispatch(toggleMenu());
-  }
+  };
 
-  const getSuggestions = async(text) => {
-    // const data = await fetch(SEARCH_SUGGETION_API + text);
-    // const json = await data.json();
-    console.log(text);
-  }
 
   return (
     <div className="grid px-4 grid-flow-col">
@@ -35,7 +63,7 @@ const Head = () => {
           src="/menu-icon.png"
           className="h-7 mr-6 pl-4 cursor-pointer"
           alt="menu icon"
-          onClick={clickToggleMenu}
+          onClick={() => toggleMenuHandler()}
         />
         <img
           src="/youtube-logo.png"
@@ -49,20 +77,25 @@ const Head = () => {
             type="text"
             className="border py-2 px-5 rounded-l-full w-1/2 text-lg"
             placeholder="search"
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
           />
-          <button
-            className="border rounded-r-full w-28 py-2 px-5 text-lg bg-slate-100 hover:bg-slate-200"
-            onClick={searchVideo}
-          >
+          <button className="border rounded-r-full w-28 py-2 px-5 text-lg bg-slate-100 hover:bg-slate-200">
             🔍
           </button>
         </div>
-        <div className="absolute w-[33rem] bg-white shadow-lg rounded-b-lg items-center justify-center ml-56">
-          <ul>
-            <li className="p-3 hover:bg-slate-100">🔍 hsdfsdfsdi</li>
-          </ul>
-        </div>
+        {showSuggestions && (
+          <div className="absolute w-[33rem] bg-white shadow-lg rounded-b-lg items-center justify-center ml-56">
+            <ul>
+              {suggestions.map((s) => (
+                <li key={s} className="p-3 hover:bg-slate-100">
+                  🔍 {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="col-span-2 flex items-center justify-center">
